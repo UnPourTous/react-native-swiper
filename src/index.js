@@ -258,7 +258,8 @@ export default class extends Component {
 
     this.internals = {
       ...this.internals,
-      isScrolling: false
+      isScrolling: false,
+      offset: {x: 0, y: 0}
     };
     return initState
   }
@@ -270,7 +271,7 @@ export default class extends Component {
 
   onLayout = (event) => {
     const { width, height } = event.nativeEvent.layout
-    const offset = this.internals.offset = {}
+    const offset = this.internals.offset
     const state = { width, height }
 
     if (this.state.total > 1) {
