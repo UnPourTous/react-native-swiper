@@ -270,6 +270,15 @@ export default class extends Component {
   }
 
   onLayout = (event) => {
+    if (!this.internals) {
+      this.internals = {
+        isScrolling: false,
+        offset: {x: 0, y: 0}
+      }
+    } else if (!this.internals.offset) {
+      this.internals.offset = { x: 0, y: 0 }
+    }
+
     const { width, height } = event.nativeEvent.layout
     const offset = this.internals.offset
     const state = { width, height }
@@ -393,9 +402,14 @@ export default class extends Component {
    * @param  {string} dir    'x' || 'y'
    */
   updateIndex = (offset, dir, cb) => {
+    let originalOffset = 0
+    if (this.internals && this.internals.offset && this.internals.offset[dir]) {
+      originalOffset = this.internals.offset[dir]
+    }
+
     const state = this.state
     let index = state.index
-    const diff = offset[dir] - this.internals.offset[dir]
+    const diff = offset[dir] - originalOffset
     const step = dir === 'x' ? state.width : state.height
     let loopJump = false
 
