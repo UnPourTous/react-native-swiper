@@ -193,8 +193,9 @@ export default class extends Component {
   loopJumpTimer = null
 
   componentWillReceiveProps (nextProps) {
-    if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
-    this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
+    // codes delow will lead to weird thing when switch tab, so delete that
+    // if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
+    // this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
   }
 
   componentDidMount () {
@@ -252,8 +253,15 @@ export default class extends Component {
     }
 
     initState.offset[initState.dir] = initState.dir === 'y'
-      ? height * props.index
-      : width * props.index
+      ? initState.height * initState.index
+      : initState.width * initState.index;
+
+    // fix render last page first when loop = true
+    if (props.loop) {
+      initState.offset[initState.dir] = initState.dir === 'y'
+        ? initState.height * (initState.index + 1)
+        : initState.width * (initState.index + 1);
+    }
 
 
     this.internals = {
@@ -261,6 +269,14 @@ export default class extends Component {
       isScrolling: false,
       offset: {x: 0, y: 0}
     };
+
+    // fix index update wiredly when loop = true
+    if (props.loop) {
+      this.internals.offset[initState.dir] = initState.dir === 'y'
+        ? initState.height * (initState.index + 1)
+        : initState.width * (initState.index + 1)
+    }
+
     return initState
   }
 
