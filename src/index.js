@@ -271,7 +271,7 @@ export default class extends Component {
     };
 
     // fix index update wiredly when loop = true
-    if (props.loop) {
+    if (props.loop && initState.total > 1) {
       this.internals.offset[initState.dir] = initState.dir === 'y'
         ? initState.height * (initState.index + 1)
         : initState.width * (initState.index + 1)
