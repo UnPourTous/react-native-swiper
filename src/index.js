@@ -193,9 +193,8 @@ export default class extends Component {
   loopJumpTimer = null
 
   componentWillReceiveProps (nextProps) {
-    // codes delow will lead to weird thing when switch tab, so delete that
-    // if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
-    // this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
+    if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
+    this.setState(this.initState(nextProps, this.props.index !== nextProps.index))
   }
 
   componentDidMount () {
