@@ -256,7 +256,7 @@ export default class extends Component {
       : initState.width * initState.index;
 
     // fix render last page first when loop = true
-    if (props.loop) {
+    if (props.loop && initState.total > 1) {
       initState.offset[initState.dir] = initState.dir === 'y'
         ? initState.height * (initState.index + 1)
         : initState.width * (initState.index + 1);
